@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sucre · tablero territorial</title>
+<meta name="robots" content="noindex,nofollow,noarchive">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<link rel="stylesheet" href="estilo.css">
+<meta name="referrer" content="no-referrer">
+</head>
+<body>
+<div id="puerta" class="puerta" role="dialog" aria-modal="true" aria-labelledby="pTit">
+  <div class="puerta-caja">
+    <p class="puerta-k">Acceso restringido</p>
+    <h2 id="pTit">Sucre · tablero territorial</h2>
+    <p>Escriba la clave que le compartió el equipo.</p>
+    <input id="pClave" type="password" autocomplete="current-password" placeholder="Clave" aria-label="Clave">
+    <button id="pEntrar" type="button">Entrar</button>
+    <p id="pErr" class="puerta-err" aria-live="polite"></p>
+    <p class="puerta-pie">Los datos viajan cifrados y solo se abren en este navegador.</p>
+  </div>
+</div>
+<header class="cab">
+  <div class="cab-in">
+    <div class="marca">
+      <h1>Sucre · tablero territorial</h1>
+      <p>Elecciones, problemas y transferencia del voto · uso interno</p>
+    </div>
+    <div class="terr" id="territorio"></div>
+  </div>
+  <nav class="tabs" id="nav" aria-label="Secciones">
+    <a href="#elecciones" data-s="elecciones"><span>1</span>Elecciones</a>
+    <a href="#problemas" data-s="problemas"><span>2</span>Problemas</a>
+    <a href="#caracterizacion" data-s="caracterizacion"><span>3</span>Caracterización</a>
+    <a href="#transferencia" data-s="transferencia"><span>4</span>Transferencia del voto</a>
+  </nav>
+</header>
+<main id="app">
+  <div id="carga" class="cargando">Cargando datos…</div>
+  <section id="s-elecciones" class="sec" aria-label="Elecciones"></section>
+  <section id="s-problemas" class="sec" aria-label="Problemas"></section>
+  <section id="s-caracterizacion" class="sec" aria-label="Caracterización"></section>
+  <section id="s-transferencia" class="sec" aria-label="Transferencia del voto"></section>
+</main>
+<footer>
+  Fuentes: Registraduría Nacional del Estado Civil (resultados mesa a mesa y Divipole georreferenciada), DNP · TerriData, DANE y panel municipal CEDE de la Universidad de los Andes. Base generada el <span id="generado"></span>.
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script src="nucleo.js"></script>
+<script src="graficos.js"></script>
+<script src="indicadores.js"></script>
+<script src="elecciones.js"></script>
+<script src="problemas.js"></script>
+<script src="caracterizacion.js"></script>
+<script src="transferencia.js"></script>
+<script src="puerta.js"></script>
+</body>
+</html>
