@@ -197,8 +197,8 @@
     T.barras(caja, filas, { max: Math.max(35, ...filas.map(f => f.valor || 0)) });
     N.cComp.append(T.h('p', { class: 'nota', text: 'Referentes: voto de la izquierda en la Alcaldía de 2023 sobre el voto presidencial de toda la ciudad, tomado de los informes de Bogotá, Cali, Popayán y Pereira. En Popayán el voto de Diago sale de los puestos cruzados con el mapa (34.921 votos). En azul, el territorio elegido.' }));
     if (o.valGob19 || o.valAlc19) {
-      const t = T.h('div', { style: { marginTop: '14px' } });
-      N.cComp.append(T.h('h3', { text: 'El bloque local de 2019 a 2023' }), t);
+      const t = T.h('div', { style: { marginTop: '6px' } });
+      N.cComp.append(T.h('h3', { text: 'El bloque local de 2019 a 2023', style: { marginTop: '20px' } }), t);
       T.tabla(t, {
         columnas: [{ k: 'eleccion', t: 'Elección', tipo: 't' }, { k: 'v19', t: 'Votos 2019', tipo: 'n' }, { k: 'p19', t: '% 2019', tipo: 'p' }, { k: 'v23', t: 'Votos 2023', tipo: 'n' }, { k: 'p23', t: '% 2023', tipo: 'p' }],
         filas: [
