@@ -191,11 +191,11 @@
     const filas = [
       { nombre: `${nombre} · ${amb.tipo === 'mun' ? 'alcaldía' : 'alcaldías'} 2023`, detalle: 'bloque marcado en esta página', valor: o.convAlc, color: T.col.bloque },
       { nombre: `${nombre} · Gobernación 2023`, detalle: 'bloque marcado en esta página', valor: o.convGob, color: T.col.bloque },
-      ...T.D.ref.map(r => ({ nombre: `${r.ciudad} · alcaldía 2023`, detalle: r.candidatura, valor: base26() ? r.conv_2026 : r.conv_2022, color: '#CFCAD5' }))
+      ...T.D.ref.map(r => ({ nombre: `${r.ciudad} · alcaldía 2023`, detalle: r.candidatura, valor: base26() ? r.conv_2026 : r.conv_2022, color: '#C9D3DA' }))
     ].map(f => ({ ...f, etiqueta: T.fmt.p(f.valor) })).sort((a, b) => (b.valor ?? -1) - (a.valor ?? -1));
     const caja = T.h('div'); N.cComp.append(caja);
     T.barras(caja, filas, { max: Math.max(35, ...filas.map(f => f.valor || 0)) });
-    N.cComp.append(T.h('p', { class: 'nota', text: 'Referentes: voto de la izquierda en la Alcaldía de 2023 sobre el voto presidencial de toda la ciudad, tomado de los informes de Bogotá, Cali, Popayán y Pereira. En Popayán el voto de Diago sale de los puestos cruzados con el mapa (34.921 votos). En morado, el territorio elegido.' }));
+    N.cComp.append(T.h('p', { class: 'nota', text: 'Referentes: voto de la izquierda en la Alcaldía de 2023 sobre el voto presidencial de toda la ciudad, tomado de los informes de Bogotá, Cali, Popayán y Pereira. En Popayán el voto de Diago sale de los puestos cruzados con el mapa (34.921 votos). En azul, el territorio elegido.' }));
     if (o.valGob19 || o.valAlc19) {
       const t = T.h('div', { style: { marginTop: '14px' } });
       N.cComp.append(T.h('h3', { text: 'El bloque local de 2019 a 2023' }), t);
@@ -265,13 +265,16 @@
     const nombreLocal = { gob2023: 'la Gobernación de 2023', alc2023: 'las alcaldías de 2023' }[e.id] || e.nombre;
     N.cQuien.append(T.h('p', { class: 'aviso', text:
       `En el tercio de puestos más petristas (${nombreBase()} con ${T.fmt.p(corte, 0)} o más), ${filas[0].etiqueta} sacó el ${T.fmt.p(filas[0].pctTop)} de los votos válidos de ${nombreLocal}. El bloque marcado sumó allí el ${T.fmt.p(valTop ? (100 * pctBloqueTop) / valTop : null)}.` }));
+    // el mismo color que la candidatura tiene en la sección de elecciones; el bloque en azul
+    const colElec = porPartido ? T.col.otro : T.coloresEleccion(e).de(sel.c);
+    const colorSel = sel.bloque === 'Sí' ? T.col.bloque : colElec === T.col.otro ? '#4B5963' : colElec;
     const grid = T.h('div', { class: 'grilla g-2', style: { marginBottom: '0' } });
     const gSc = T.h('div'), gTb = T.h('div');
     grid.append(gSc, gTb);
     N.cQuien.append(grid);
     T.dispersion(gSc, {
       puntos: sel.pares.map(([x, y, w, u]) => ({
-        x, y, r: 3 + 9 * Math.sqrt(w / Math.max(...sel.pares.map(q => q[2]))), color: sel.bloque === 'Sí' ? T.col.bloque : T.col.cand[0],
+        x, y, r: 3 + 9 * Math.sqrt(w / Math.max(...sel.pares.map(q => q[2]))), color: colorSel,
         titulo: `${u.p.n} · ${T.muni[u.p.m].n}`, filas: [{ v: T.fmt.p(x), l: nombreBase() }, { v: T.fmt.p(y), l: sel.etiqueta }, { v: T.fmt.n(w), l: 'votos válidos locales' }]
       })),
       xlab: `% ${nombreBase()} en el puesto`, ylab: `% ${sel.etiqueta.length > 28 ? sel.etiqueta.slice(0, 26) + '…' : sel.etiqueta}`, xmax: 100, alto: 320,

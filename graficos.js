@@ -49,7 +49,7 @@
         if (i === ultimo || suelto) svg.append(T.s('circle', { cx: x(i), cy: y(v), r: 4, fill: s.color, stroke: '#fff', 'stroke-width': 2 }));
       });
     }
-    const guia = T.s('line', { x1: 0, x2: 0, y1: m.t, y2: H - m.b, stroke: '#1E1A24', 'stroke-width': 1, opacity: 0 });
+    const guia = T.s('line', { x1: 0, x2: 0, y1: m.t, y2: H - m.b, stroke: '#13222C', 'stroke-width': 1, opacity: 0 });
     const capa = T.s('rect', { x: m.l - 12, y: 0, width: iw + 24, height: H, fill: 'transparent', tabindex: 0 });
     svg.append(guia, capa);
     const leer = (ev, i) => {
@@ -88,14 +88,14 @@
     const colW = iw / nb;
     cuenta.forEach((c, i) => {
       const hgt = cmax ? (c / cmax) * ih : 0;
-      const r = T.s('rect', { x: m.l + i * colW + 1, y: m.t + ih - hgt, width: Math.max(1, colW - 2), height: hgt, fill: '#DAD5E0' });
+      const r = T.s('rect', { x: m.l + i * colW + 1, y: m.t + ih - hgt, width: Math.max(1, colW - 2), height: hgt, fill: '#D3DCE2' });
       const hit = T.s('rect', { x: m.l + i * colW, y: m.t, width: colW, height: ih, fill: 'transparent' });
       hit.addEventListener('pointermove', ev => T.tip.mostrar(ev, `${T.fmt.v(lo + i * bw)} a ${T.fmt.v(lo + (i + 1) * bw)}`, [{ v: T.fmt.n(c), l: 'municipios' }]));
       hit.addEventListener('pointerleave', () => T.tip.ocultar());
       svg.append(r, hit);
     });
     svg.append(T.s('line', { class: 'eje', x1: m.l, x2: W - m.r, y1: m.t + ih, y2: m.t + ih }));
-    svg.append(T.s('text', { x: m.l, y: m.t + ih + 14, text: T.fmt.v(lo) }), T.s('text', { x: W - m.r, y: m.t + ih + 14, 'text-anchor': 'end', text: T.fmt.v(hi) }));
+    svg.append(T.s('text', { x: m.l, y: m.t + ih + 14, text: T.fmt.eje(lo) }), T.s('text', { x: W - m.r, y: m.t + ih + 14, 'text-anchor': 'end', text: T.fmt.eje(hi) }));
     // marcas con etiquetas en dos renglones para que no se encimen
     const orden = marcas.map(mk => ({ ...mk, px: x(mk.v) })).sort((a, b) => a.px - b.px);
     let ultimoFin = [-1e9, -1e9];
@@ -107,7 +107,7 @@
       if (fila === 1 && xt - largo / 2 <= ultimoFin[1] + 8) xt = ultimoFin[1] + 8 + largo / 2;
       ultimoFin[fila] = xt + largo / 2;
       svg.append(T.s('circle', { cx: mk.px, cy: m.t + ih + 3, r: 3.5, fill: mk.color, stroke: '#fff', 'stroke-width': 1.5 }));
-      svg.append(T.s('text', { x: xt, y: m.t + ih + 28 + fila * 14, 'text-anchor': 'middle', style: 'fill:#1E1A24', text: txt }));
+      svg.append(T.s('text', { x: xt, y: m.t + ih + 28 + fila * 14, 'text-anchor': 'middle', style: 'fill:#13222C', text: txt }));
     }
     cont.append(svg);
     if (cfg.nota) cont.append(T.h('p', { class: 'nota', text: cfg.nota }));
@@ -128,14 +128,14 @@
     for (const t of yt) svg.append(T.s('line', { class: 'grid', x1: m.l, x2: W - m.r, y1: Y(t), y2: Y(t) }), T.s('text', { x: m.l - 8, y: Y(t) + 4, 'text-anchor': 'end', text: T.fmt.eje(t) }));
     for (const t of xt) svg.append(T.s('text', { x: X(t), y: m.t + ih + 16, 'text-anchor': 'middle', text: T.fmt.eje(t) }));
     svg.append(T.s('line', { class: 'eje', x1: m.l, x2: W - m.r, y1: Y(y0), y2: Y(y0) }));
-    svg.append(T.s('text', { x: m.l + iw / 2, y: H - 4, 'text-anchor': 'middle', style: 'fill:#57515F;font-weight:600', text: cfg.xlab }));
-    svg.append(T.s('text', { x: 12, y: m.t + ih / 2, transform: `rotate(-90 12 ${m.t + ih / 2})`, 'text-anchor': 'middle', style: 'fill:#57515F;font-weight:600', text: cfg.ylab }));
+    svg.append(T.s('text', { x: m.l + iw / 2, y: H - 4, 'text-anchor': 'middle', style: 'fill:#4B5963;font-weight:600', text: cfg.xlab }));
+    svg.append(T.s('text', { x: 12, y: m.t + ih / 2, transform: `rotate(-90 12 ${m.t + ih / 2})`, 'text-anchor': 'middle', style: 'fill:#4B5963;font-weight:600', text: cfg.ylab }));
     const orden = pts.slice().sort((a, b) => (b.r || 4) - (a.r || 4));
     for (const p of orden) {
       p._cx = X(p.x); p._cy = Y(p.y);
       svg.append(T.s('circle', { cx: p._cx, cy: p._cy, r: p.r || 4, fill: p.color || T.col.bloque, 'fill-opacity': p.opacidad ?? 0.72, stroke: '#fff', 'stroke-width': 1.5 }));
     }
-    const aro = T.s('circle', { r: 0, fill: 'none', stroke: '#1E1A24', 'stroke-width': 2, opacity: 0 });
+    const aro = T.s('circle', { r: 0, fill: 'none', stroke: '#13222C', 'stroke-width': 2, opacity: 0 });
     const capa = T.s('rect', { x: 0, y: 0, width: W, height: H, fill: 'transparent' });
     svg.append(aro, capa);
     capa.addEventListener('pointermove', ev => {

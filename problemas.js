@@ -6,7 +6,7 @@
   const st = { tab: 'salud', ind: { salud: 's_mi1', seguridad: 'g_hom', economia: 'e_ipm', educacion: 'd_media' }, buscar: '' };
   const N = {};
   let mapa, pintarAmbito;
-  const COL_TERR = '#6A1B9A', COL_SUCRE = '#1baf7a', COL_PAIS = '#8A8492';
+  const COL_TERR = '#0B6FB8', COL_SUCRE = '#2EBFA5', COL_PAIS = '#83909A';
   const TABS = [{ v: 'salud', t: 'Salud' }, { v: 'seguridad', t: 'Seguridad' }, { v: 'economia', t: 'Economía' }, { v: 'educacion', t: 'Educación y servicios' }];
   const ok = v => v != null && typeof v === 'number' && isFinite(v);
   const indActual = () => T.D.ind.ind.find(x => x.id === st.ind[st.tab]) || T.D.ind.dep.find(x => x.id === st.ind[st.tab]);
@@ -159,7 +159,7 @@
     const gd = T.h('div'); N.cDist.append(gd);
     T.distribucion(gd, {
       valores: ind.nac,
-      marcas: [{ nombre: amb.tipo === 'dep' ? 'Sucre' : amb.nombre, v, color: COL_TERR }, { nombre: 'Colombia', v: ind.agg === 'suma' ? null : pais, color: '#57515F' }, { nombre: 'Caribe', v: car, color: COL_SUCRE }],
+      marcas: [{ nombre: amb.tipo === 'dep' ? 'Sucre' : amb.nombre, v, color: COL_TERR }, { nombre: 'Colombia', v: ind.agg === 'suma' ? null : pais, color: '#4B5963' }, { nombre: 'Caribe', v: car, color: COL_SUCRE }],
       nota: ind.dir === -1 ? 'Hacia la derecha, valores más altos: situación más desfavorable.' : ind.dir === 1 ? 'Hacia la derecha, valores más altos: situación más favorable.' : 'Indicador de contexto.'
     });
 
@@ -182,7 +182,7 @@
         { k: 'municipio', t: 'Municipio', tipo: 't', clase: 'nombre' }, { k: 'subregion', t: 'Subregión', tipo: 't' },
         { k: 'valor', t: `Valor ${y}`, tipo: 'v' },
         { k: 'brecha', t: 'Frente al país', tipo: 'n', fmt: x => T.fmt.rel(x), ayuda: 'Diferencia relativa con el valor nacional; positivo = situación más desfavorable' },
-        { k: 'situacion', t: 'Entre los municipios del país', tipo: 'n', orden: f => f.sev, csv: f => f.situacion },
+        { k: 'situacion', t: 'Entre los municipios del país', tipo: 'n', fmt: v => v, orden: f => f.sev, csv: f => f.situacion },
         { k: 'rank', t: 'Puesto en Sucre (1 = peor)', tipo: 'n' },
         { k: 'v0', t: isFinite(a0) ? `Primer dato (${a0})` : 'Primer dato', tipo: 'v', fmt: (x, f) => (ok(x) ? `${T.fmt.v(x)} (${f.a0})` : '—'), csv: f => f.v0 },
         { k: 'cambio', t: 'Cambio desde el primer dato', tipo: 'n', fmt: x => (ok(x) ? T.fmt.signo(x, Math.abs(x) < 10 ? 2 : 0) : '—') }
@@ -209,9 +209,9 @@
     ]);
     const cBar = T.h('div', { class: 'tarjeta' }), cSer = T.h('div', { class: 'tarjeta' }), cCap = T.h('div', { class: 'tarjeta' });
     N.vDep.append(cab, tiles, T.h('div', { class: 'grilla g-2' }, cBar, T.h('div', { class: 'grilla', style: { marginBottom: '0', alignContent: 'start' } }, cSer, cCap)));
-    cBar.append(T.h('h3', { text: 'Departamentos, de peor a mejor situación' }), T.h('p', { class: 'sub', text: `${y} · Sucre en morado` }));
+    cBar.append(T.h('h3', { text: 'Departamentos, de peor a mejor situación' }), T.h('p', { class: 'sub', text: `${y} · Sucre en azul` }));
     const b = T.h('div'); cBar.append(b);
-    T.barras(b, r.lista.map((x, i) => ({ nombre: `${i + 1}. ${x.n}`, valor: x.v, etiqueta: T.fmt.v(x.v), color: x.cod === '70' ? T.col.bloque : '#CFCAD5' })),
+    T.barras(b, r.lista.map((x, i) => ({ nombre: `${i + 1}. ${x.n}`, valor: x.v, etiqueta: T.fmt.v(x.v), color: x.cod === '70' ? T.col.bloque : '#C9D3DA' })),
       { max: Math.max(...r.lista.map(x => x.v)) });
     cSer.append(T.h('h3', { text: 'Evolución' }), T.h('p', { class: 'sub', text: ind.u }));
     const g = T.h('div'); cSer.append(g);

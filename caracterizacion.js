@@ -153,8 +153,8 @@
       for (const x of filas) {
         const c = I.clase5(x.sev);
         const pista = T.h('div', { style: { position: 'relative', height: '16px' } },
-          T.h('div', { style: { position: 'absolute', left: '0', right: '0', top: '7px', height: '2px', background: '#EEEBF1', borderRadius: '2px' } }),
-          T.h('div', { style: { position: 'absolute', left: '50%', top: '2px', width: '1px', height: '12px', background: '#CFCAD5' } }),
+          T.h('div', { style: { position: 'absolute', left: '0', right: '0', top: '7px', height: '2px', background: '#E9EEF1', borderRadius: '2px' } }),
+          T.h('div', { style: { position: 'absolute', left: '50%', top: '2px', width: '1px', height: '12px', background: '#C9D3DA' } }),
           T.h('div', { style: { position: 'absolute', left: `calc(${Math.max(0, Math.min(100, x.sev))}% - 6px)`, top: '2px', width: '12px', height: '12px', borderRadius: '50%', background: T.col.div[c], boxShadow: '0 0 0 2px #fff' } }));
         const fila = T.h('div', { class: 'perfil-fila', tabindex: 0, style: { cursor: 'pointer' } }, T.h('span', { text: x.ind.n }), pista, T.h('span', { class: 'v', text: T.fmt.v(x.v) }));
         const detalle = posicion(x.ind, est, x.v) || '';

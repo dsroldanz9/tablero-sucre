@@ -9,15 +9,15 @@
   /* ---------------- colores (validados con el script de dataviz) ---------------- */
   T.col = {
     // candidatos: tres primeros por votos departamentales; el resto en gris
-    cand: ['#2a78d6', '#1baf7a', '#eda100'],
-    otro: '#B9B4C0',
+    cand: ['#eda100', '#6C4AB6', '#1baf7a'],
+    otro: '#B4BEC6',
     // magnitud: un solo tono, claro a oscuro
-    seq: ['#F1E7F7', '#DCC2EC', '#C29BDD', '#A472CB', '#874AB7', '#6A1B9A', '#4B1172'],
-    // brecha frente al país: naranja = peor, morado = mejor, gris = parecido
-    div: ['#6A1B9A', '#B38BD6', '#E4E1E7', '#F2A474', '#D2530F'],
-    bloque: '#6A1B9A',
-    vacio: '#ECEAEF',
-    tinta: '#1E1A24', tinta2: '#57515F', tenue: '#8A8492'
+    seq: ['#E3F2F6', '#BEE0EA', '#8CC7D8', '#57A9C2', '#2E88A8', '#16678A', '#0B4A6B'],
+    // brecha frente al país: coral = peor, verde azulado = mejor, gris = parecido
+    div: ['#00897B', '#7FCBC1', '#E4E8EB', '#F2AC98', '#C84E36'],
+    bloque: '#0B6FB8',
+    vacio: '#E9EEF1',
+    tinta: '#13222C', tinta2: '#4B5963', tenue: '#83909A'
   };
 
   /* ---------------- formato ---------------- */
@@ -313,25 +313,25 @@
     const div = T.h('div', { class: 'mapa' });
     cont.append(div);
     const m = L.map(div, { scrollWheelZoom: false, zoomSnap: 0.25, attributionControl: true });
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png',
-      { subdomains: 'abcd', maxZoom: 19, attribution: '© OpenStreetMap · © CARTO' }).addTo(m);
-    m.createPane('etiquetas'); m.getPane('etiquetas').style.zIndex = 455; m.getPane('etiquetas').style.pointerEvents = 'none';
+    // CARTO ya exige llave (pinta "API KEY REQUIRED" sobre el mapa): base de OpenStreetMap en gris por CSS
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19, className: 'mapa-base', referrerPolicy: 'strict-origin-when-cross-origin',
+      attribution: '© <a href="https://www.openstreetmap.org/copyright">colaboradores de OpenStreetMap</a>'
+    }).addTo(m);
     m.createPane('puntos'); m.getPane('puntos').style.zIndex = 470;
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_only_labels/{z}/{x}/{y}{r}.png',
-      { subdomains: 'abcd', maxZoom: 19, pane: 'etiquetas' }).addTo(m);
 
     let colorDe = () => T.col.vacio, tipDe = null, opacidad = 0.82;
     const estilo = f => {
       const cod = f.properties.cod, est = T.estado;
       const fuera = (est.sub && T.muni[cod].sub !== est.sub) || (est.mun && est.mun !== cod && cfg.atenuar !== false);
       const sel = est.mun === cod;
-      return { fillColor: colorDe(cod), fillOpacity: fuera ? 0.18 : opacidad, color: sel ? '#1E1A24' : '#FFFFFF', weight: sel ? 2.6 : 1.1, opacity: 1 };
+      return { fillColor: colorDe(cod), fillOpacity: fuera ? 0.18 : opacidad, color: sel ? '#13222C' : '#FFFFFF', weight: sel ? 2.6 : 1.1, opacity: 1 };
     };
     const capa = L.geoJSON(T.D.geo.sucre, {
       style: estilo,
       onEachFeature: (f, lyr) => {
         lyr.on('mouseover', e => {
-          lyr.setStyle({ weight: 2.6, color: '#1E1A24' }); lyr.bringToFront();
+          lyr.setStyle({ weight: 2.6, color: '#13222C' }); lyr.bringToFront();
           if (tipDe) { const t = tipDe(f.properties.cod); T.tip.mostrar(e.originalEvent, t[0], t[1]); }
         });
         lyr.on('mousemove', e => T.tip.mover(e.originalEvent));
@@ -350,7 +350,7 @@
         for (const p of lista) {
           if (p.lat == null || p.lon == null) continue;
           const c = L.circleMarker([p.lat, p.lon], { pane: 'puntos', radius: radio(p), color: '#FFFFFF', weight: 2, fillColor: color(p), fillOpacity: 0.92 });
-          c.on('mouseover', e => { c.setStyle({ color: '#1E1A24' }); const t = tip(p); T.tip.mostrar(e.originalEvent, t[0], t[1]); });
+          c.on('mouseover', e => { c.setStyle({ color: '#13222C' }); const t = tip(p); T.tip.mostrar(e.originalEvent, t[0], t[1]); });
           c.on('mousemove', e => T.tip.mover(e.originalEvent));
           c.on('mouseout', () => { c.setStyle({ color: '#FFFFFF' }); T.tip.ocultar(); });
           if (alClic) c.on('click', () => { T.tip.ocultar(); alClic(p); });
@@ -499,7 +499,13 @@
     construirSelector();
     Object.assign(T.estado, leerHash());
     document.querySelectorAll('#nav a').forEach(a => a.addEventListener('click', ev => { ev.preventDefault(); mostrarSeccion(a.dataset.s); }));
-    window.addEventListener('hashchange', () => { const h = leerHash(); if (h.sec !== T.estado.sec) mostrarSeccion(h.sec); T.fijar({ mun: h.mun, sub: h.sub }); });
+    // primero el territorio y después la sección: si no, la sección nueva se pinta con el territorio anterior
+    window.addEventListener('hashchange', () => {
+      const h = leerHash();
+      T.estado.mun = h.mun; T.estado.sub = h.mun && T.muni[h.mun] ? T.muni[h.mun].sub : h.sub;
+      if (h.sec !== T.estado.sec) mostrarSeccion(h.sec);
+      T.fijar({});
+    });
     document.getElementById('app').classList.remove('cargando');
     const carga = document.getElementById('carga'); if (carga) carga.remove();
     pintarSelector();
