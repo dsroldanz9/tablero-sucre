@@ -72,7 +72,7 @@
   S.iniciar = function (cont) {
     bloque = cargar();
     pintarAmbito = T.cabecera(cont, 'Transferencia del voto',
-      'Cuánto del voto presidencial de izquierda se vuelve voto local. La conversión es el voto del bloque en la elección local dividido por el voto de Petro en la segunda vuelta de 2022, o de Cepeda en la de 2026. Es el mismo cálculo de los informes de Bogotá, Cali, Popayán y Pereira. El bloque se ajusta al final de la página.');
+      'Cuánto del voto presidencial de izquierda se vuelve voto local. La conversión es el voto del bloque en la elección local dividido por el voto de Petro en la segunda vuelta de 2022, o de Cepeda en la de 2026. Usa la definición de los informes de Bogotá, Cali, Popayán y Pereira, recalculada sobre el voto presidencial de toda la ciudad. El bloque se ajusta al final de la página.');
     N.filtros = T.h('div', { class: 'filtros' });
     N.tiles = T.h('div');
     N.resumen = T.h('div', { class: 'aviso' });
@@ -109,7 +109,7 @@
     const lugar = T.I.enAmbito();
     const refs = T.D.ref.map(r => `${r.ciudad} ${T.fmt.p(base26() ? r.conv_2026 : r.conv_2022)}`);
     const presi = base26() ? `Cepeda sacó ${T.fmt.n(o.cep)} votos en la segunda vuelta de 2026` : `Petro sacó ${T.fmt.n(o.petro)} votos en la segunda vuelta de 2022`;
-    return `En ${lugar}, ${presi}. En las alcaldías de 2023 el bloque sumó ${T.fmt.n(o.alc)} votos: una conversión de ${T.fmt.p(o.convAlc)}. En la Gobernación sumó ${T.fmt.n(o.gob)}, una conversión de ${T.fmt.p(o.convGob)}. En los informes anteriores, la conversión en la alcaldía fue de ${T.I.lista(refs)}.`;
+    return `En ${lugar}, ${presi}. En las alcaldías de 2023 el bloque sumó ${T.fmt.n(o.alc)} votos: una conversión de ${T.fmt.p(o.convAlc)}. En la Gobernación sumó ${T.fmt.n(o.gob)}, una conversión de ${T.fmt.p(o.convGob)}. Con la definición de los informes anteriores, sobre el voto de toda la ciudad, la conversión en la alcaldía fue de ${T.I.lista(refs)}.`;
   }
 
   function filtros() {
@@ -195,7 +195,7 @@
     ].map(f => ({ ...f, etiqueta: T.fmt.p(f.valor) })).sort((a, b) => (b.valor ?? -1) - (a.valor ?? -1));
     const caja = T.h('div'); N.cComp.append(caja);
     T.barras(caja, filas, { max: Math.max(35, ...filas.map(f => f.valor || 0)) });
-    N.cComp.append(T.h('p', { class: 'nota', text: 'Referentes: voto de la izquierda en la Alcaldía de 2023 sobre el voto presidencial de toda la ciudad, tomado de los informes de Bogotá, Cali, Popayán y Pereira. En Popayán el voto de Diago sale de los puestos cruzados con el mapa (34.921 votos). En azul, el territorio elegido.' }));
+    N.cComp.append(T.h('p', { class: 'nota', text: 'Referentes: voto de la izquierda en la Alcaldía de 2023 sobre el voto presidencial de toda la ciudad, con la definición de los informes de Bogotá, Cali, Popayán y Pereira. En Popayán el voto de Diago sale de los puestos cruzados con el mapa (34.921 votos). En azul, el territorio elegido.' }));
     if (o.valGob19 || o.valAlc19) {
       const t = T.h('div', { style: { marginTop: '6px' } });
       N.cComp.append(T.h('h3', { text: 'El bloque local de 2019 a 2023', style: { marginTop: '20px' } }), t);
@@ -332,7 +332,7 @@
       boton('Sumar Alianza Verde, Verde Oxígeno y Dignidad', () => { for (const c of porDefecto(true)) bloque.add(c); guardar(); pintar(); }),
       boton('Desmarcar todo', () => { bloque = new Set(); guardar(); pintar(); }));
     N.cBloque.append(acciones, T.h('p', { class: 'aviso', text:
-      'La clasificación automática marca Colombia Humana, Polo Democrático, Unión Patriótica, Pacto Histórico, Partido Comunista, ADA y MAIS. Las coaliciones con nombre propio, como "Mujer de Resultados" o "Convergencia Alternativa por Sucre", no dicen qué partidos las forman: márquelas a mano si corresponde.' }));
+      'La clasificación automática marca, por nombre de partido, a Colombia Humana, Polo Democrático, Unión Patriótica, Pacto Histórico, Partido Comunista, ADA, MAIS y afines. Las coaliciones con nombre propio, como «Mujer de Resultados» o «Convergencia Alternativa por Sucre», no dicen qué partidos las forman: márquelas a mano si corresponde.' }));
     const grid = T.h('div', { class: 'bloques' });
     for (const [id, nombre] of LOCALES) {
       const fs = T.h('fieldset', null, T.h('legend', { text: nombre }));
