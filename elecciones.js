@@ -209,7 +209,7 @@
       }
       filas.push({ nombre: 'Voto en blanco', valor: r.pctBlanco, etiqueta: T.fmt.p(r.pctBlanco), sub: T.fmt.n(r.blanco), color: T.col.otro });
       T.barras(caja, filas);
-      N.cRes.append(T.h('p', { class: 'nota', text: `Nulos: ${T.fmt.n(r.nulos)} · no marcados: ${T.fmt.n(r.nomarc)}. Fuente: ${e.fuente}. "Pacto y aliados" marca automáticamente Colombia Humana, Polo, Unión Patriótica, Pacto Histórico, Partido Comunista, ADA y MAIS; la sección 4 permite ajustarlo.` }));
+      N.cRes.append(T.h('p', { class: 'nota', text: `Nulos: ${T.fmt.n(r.nulos)} · no marcados: ${T.fmt.n(r.nomarc)}. Fuente: ${e.fuente}. "Pacto y aliados" marca automáticamente, por nombre de partido, a Colombia Humana, Polo, Unión Patriótica, Pacto Histórico, Partido Comunista, ADA, MAIS y afines. En la sección 4 se ajusta para calcular la transferencia.` }));
       return;
     }
     const pm = porMuni(e);
