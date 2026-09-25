@@ -108,12 +108,12 @@
   /* ---------------- controles ---------------- */
   T.selector = function (opciones, valor, alCambiar, etiqueta) {
     const s = T.h('select', { 'aria-label': etiqueta || '' });
-    let grupo = null, gname = null;
+    const grupos = new Map();   // un solo optgroup por nombre, aunque las opciones no vengan seguidas
     for (const o of opciones) {
-      if (o.grupo && o.grupo !== gname) { grupo = T.h('optgroup', { label: o.grupo }); s.append(grupo); gname = o.grupo; }
+      if (o.grupo && !grupos.has(o.grupo)) { const g = T.h('optgroup', { label: o.grupo }); s.append(g); grupos.set(o.grupo, g); }
       const op = T.h('option', { value: o.v, text: o.t });
       if (String(o.v) === String(valor)) op.selected = true;
-      (o.grupo ? grupo : s).append(op);
+      (o.grupo ? grupos.get(o.grupo) : s).append(op);
     }
     s.addEventListener('change', () => alCambiar(s.value));
     return etiqueta ? T.h('label', { class: 'campo' }, T.h('span', { text: etiqueta }), s) : s;

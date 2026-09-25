@@ -5,7 +5,7 @@
   const S = (T.secciones.caracterizacion = {});
   const N = {};
   let pintarAmbito, textoPlano = '';
-  const TEMAS = [['salud', 'Salud'], ['seguridad', 'Seguridad'], ['economia', 'Economía'], ['educacion', 'Educación y servicios']];
+  const TEMAS = () => Object.entries(T.D.ind.tabs);   // salen de los datos, como en la sección 2
   const ok = v => v != null && typeof v === 'number' && isFinite(v);
 
   S.iniciar = function (cont) {
@@ -98,7 +98,7 @@
     const B = [{ h: 'Panorama' }, { p: panorama(est, pobT, pobDep, comparables.length, peores.length, mejores.length) }];
     if (peores.length) B.push({ h: 'Lo más crítico' }, { ul: peores.slice(0, 6).map(x => [descripcion(x.ind, est), tendencia(x.ind, est)].filter(Boolean).join(' ')), ids: peores.slice(0, 6).map(x => x.ind.id) });
     if (mejores.length) B.push({ h: 'Donde la situación es mejor' }, { ul: mejores.slice(0, 4).map(x => descripcion(x.ind, est)), ids: mejores.slice(0, 4).map(x => x.ind.id) });
-    for (const [tab, nombre] of TEMAS) {
+    for (const [tab, nombre] of TEMAS()) {
       const inds = todos.filter(ind => ind.tab === tab);
       if (!inds.length) continue;
       const comp = inds.filter(ind => ind.dir !== 0).map(ind => ({ ind, sev: I.severidad(ind, est) })).filter(x => x.sev != null).sort((a, b) => b.sev - a.sev);
@@ -145,7 +145,7 @@
     const I = T.I;
     N.perfil.replaceChildren(T.h('h3', { text: 'Perfil frente al país' }),
       T.h('p', { class: 'sub', text: est.mun || est.sub ? 'Posición entre los municipios del país. A la derecha, peor situación.' : 'Posición entre los departamentos. A la derecha, peor situación.' }));
-    for (const [tab, nombre] of TEMAS) {
+    for (const [tab, nombre] of TEMAS()) {
       const filas = T.D.ind.ind.filter(ind => ind.tab === tab && ind.dir !== 0)
         .map(ind => ({ ind, sev: I.severidad(ind, est), v: I.valor(ind, est) })).filter(x => x.sev != null).sort((a, b) => b.sev - a.sev);
       if (!filas.length) continue;

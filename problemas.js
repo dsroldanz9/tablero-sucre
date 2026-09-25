@@ -1,20 +1,22 @@
-/* Sección 2 · Problemas: salud, seguridad, economía y educación por municipio frente al país */
+/* Sección 2 · Problemas: salud, seguridad, economía, educación, tierra y programas sociales por municipio frente al país */
 (function () {
   'use strict';
   const T = window.T;
   const S = (T.secciones.problemas = {});
-  const st = { tab: 'salud', ind: { salud: 's_mi1', seguridad: 'g_hom', economia: 'e_ipm', educacion: 'd_media' }, buscar: '' };
+  const st = { tab: 'salud', buscar: '',
+    ind: { salud: 's_mi1', seguridad: 'g_hom', economia: 'e_ipm', educacion: 'd_media', tierras: 't_inf', programas: 'p_sisab' } };
   const N = {};
   let mapa, pintarAmbito;
   const COL_TERR = '#0B6FB8', COL_SUCRE = '#2EBFA5', COL_PAIS = '#83909A';
-  const TABS = [{ v: 'salud', t: 'Salud' }, { v: 'seguridad', t: 'Seguridad' }, { v: 'economia', t: 'Economía' }, { v: 'educacion', t: 'Educación y servicios' }];
+  // los temas salen de los datos, para que no se queden atrás cuando se agregue uno nuevo
+  const TABS = () => Object.entries(T.D.ind.tabs).map(([v, t]) => ({ v, t }));
   const ok = v => v != null && typeof v === 'number' && isFinite(v);
   const indActual = () => T.D.ind.ind.find(x => x.id === st.ind[st.tab]) || T.D.ind.dep.find(x => x.id === st.ind[st.tab]);
   const direccion = ind => (ind.dir === 1 ? 'más alto es mejor' : ind.dir === -1 ? 'más alto es peor' : 'indicador de contexto');
 
   S.iniciar = function (cont) {
     pintarAmbito = T.cabecera(cont, 'Problemas',
-      'Indicadores oficiales por municipio en cuatro temas. Para cada uno aparece el valor del territorio, el del país, la mediana de los municipios del Caribe y la posición frente a los 1.102 municipios de Colombia. El color del mapa resume esa posición.');
+      'Indicadores oficiales por municipio en seis temas. Para cada uno aparece el valor del territorio, el del país, la mediana de los municipios del Caribe y la posición frente a los 1.102 municipios de Colombia. El color del mapa resume esa posición.');
     N.tabs = T.h('div', { class: 'filtros' });
     N.rail = T.h('div', { class: 'rail' });
     N.vMun = T.h('div'); N.vDep = T.h('div');
@@ -37,7 +39,7 @@
   S.mostrar = () => { if (mapa && !N.vMun.hidden) mapa.refrescar(); };
   S.actualizar = function () {
     pintarAmbito();
-    N.tabs.replaceChildren(T.segmentos(TABS, st.tab, v => { st.tab = v; st.buscar = ''; pintarRail(); pintar(); }, 'Tema'));
+    N.tabs.replaceChildren(T.segmentos(TABS(), st.tab, v => { st.tab = v; st.buscar = ''; pintarRail(); pintar(); }, 'Tema'));
     pintarRail(); pintar();
     if (!N.vMun.hidden) mapa.enfocar();
   };

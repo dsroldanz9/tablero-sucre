@@ -7,7 +7,8 @@
   const N = {};
   let mapa, pintarAmbito;
 
-  const GRUPO = id => (id.startsWith('p') ? 'Presidenciales' : id.endsWith('2023') ? 'Territoriales 2023' : 'Territoriales 2019');
+  const GRUPO = id => (/^(sen|cam)/.test(id) ? 'Congreso' : id.startsWith('p') ? 'Presidenciales'
+    : id.endsWith('2023') ? 'Territoriales 2023' : 'Territoriales 2019');
   const eleccion = () => T.D.el.elecciones.find(e => e.id === st.eleccion);
   const sumaPacto = r => r.filas.filter(f => f.b === 'pacto').reduce((a, f) => a + f.votos, 0);
 
